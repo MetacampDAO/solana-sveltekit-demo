@@ -15,4 +15,4 @@ npm install
 npm run dev 
 ```
 
-## Type localhost:3000 on your browser
+## Type and visit localhost:3000 in your browser
