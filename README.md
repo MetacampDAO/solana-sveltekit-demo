@@ -1,21 +1,18 @@
-# Interact with Solana web3.js sdk
+# Interact with @solana/web3.js on Svelte Kit
 
-This repo helps you to understand, try and play with the Solana SDK on Svelte Kit. Use the following steps to get started.
+Understand, try and play with the Solana SDK on Svelte Kit. Use the following steps to get started.
 
-## Clone repo to your file system
+## Clone repo and start web server
 
 ```bash
-# Clone repo
+## Clone repo
 git clone https://github.com/Jonas002/sveltekit-solana.git
 
-
-## Install NPM dependencies
-
-```bash
+## Install npm dependencies
 npm install
 
-# Run server on localhost:3000
+# Start server on localhost:3000
 npm run dev 
 ```
 
-## Try and play on your browser via localhost:3000
+## Type localhost:3000 on your browser
