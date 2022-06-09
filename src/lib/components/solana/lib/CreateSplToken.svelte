@@ -1,6 +1,6 @@
 <script lang=ts>
     // Creating your own fungible token
-    import { createMint, getOrCreateAssociatedTokenAccount, getMint } from '@solana/spl-token';
+    import { createMint, getOrCreateAssociatedTokenAccount } from '@solana/spl-token';
     import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
     import { walletStore } from '@svelte-on-solana/wallet-adapter-core';
     import { cluster } from "$lib/stores";
@@ -16,10 +16,11 @@
     var mintAuthority : PublicKey | null = $walletStore.publicKey; 
     var freezeAuthority : PublicKey | null = $walletStore.publicKey;
 
+
+
     let airDropSignature : any
     let mintAccount : any
     let splTokenAccount : any
-    let mintInfo : any
 
 
     // Request Airdrop function
@@ -52,16 +53,6 @@
     }
     
 
-    // Get SPL Token supply
-    async function getMintInfo() {
-        mintInfo = await getMint(
-            connection,
-            mintAccount
-        )
-
-        return mintInfo
-    }
-
     // Create SPL Token Account
     async function createSplTokenAccount(){
         splTokenAccount = await getOrCreateAssociatedTokenAccount(
@@ -73,6 +64,9 @@
 
         return splTokenAccount.address.toString()
     }
+
+    $: mintAuthority = $walletStore.publicKey
+    $: freezeAuthority = $walletStore.publicKey
 
 </script>
 
@@ -127,22 +121,6 @@
                 {/if}
             {:catch error}
                 <p>No SPL token account data</p>
-            {/await}
-        </div>
-        <div>
-            <button class="p-2 bg-primary rounded-md " on:click={getMintInfo}>
-                Get Mint Info
-            </button>
-            {#await mintInfo}
-                <p>waiting mint info</p>
-            {:then value }
-                {#if value}
-                    <p>Mint Info: 
-                        {value}
-                    </p>
-                {/if}
-            {:catch error}
-                <p>No mint info data</p>
             {/await}
         </div>
     </div>
