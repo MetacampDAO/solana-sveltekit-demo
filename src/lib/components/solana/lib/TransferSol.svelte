@@ -81,7 +81,7 @@
 
 </script>
 
-<section class="bg-dark p-4 space-y-4 w-1/2 rounded-md">
+<section class="bg-dark p-4 space-y-4 w-1/2 rounded-md text-black dark:text-white">
 	<div class="grid grid-cols-1 space-y-4">
 		<div>
 			<label for="Source">Source:</label>

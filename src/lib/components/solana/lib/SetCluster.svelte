@@ -1,4 +1,4 @@
-<script>
+<script lang=ts>
     import { cluster } from "$lib/stores";
 
 	// Define list for selecting cluster
@@ -17,7 +17,7 @@
 
 </script>
 
-<section>
+<section class="text-black dark:text-white" >
 	<div>
 		<label for="Cluster">Cluster:</label>
 		<select class='text-black' bind:value={cluster_selected} on:change={setCluster}>

@@ -52,7 +52,7 @@
 
 </script>
 
-<section class="bg-dark p-4 space-y-4 w-1/2 rounded-md">
+<section class="bg-dark p-4 space-y-4 w-1/2 rounded-md text-black dark:text-white">
 	<div>
 		<input class="text-black w-full" bind:value={account.publicKey} placeholder="Enter recipient address ...">
 		<button class="p-2 bg-primary rounded-md" on:click={handleClick}>

@@ -70,7 +70,7 @@
 
 </script>
 
-<section class="bg-dark p-4 space-y-4 w-1/2 rounded-md">
+<section class="bg-dark p-4 space-y-4 w-1/2 rounded-md text-black dark:text-white">
     <div class="space-y-4">
         <div>
             Token Signer: {payer.publicKey}

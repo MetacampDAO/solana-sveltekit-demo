@@ -1,7 +1,6 @@
 <script lang="ts">
     // Wallet Store
     import { walletStore } from '@svelte-on-solana/wallet-adapter-core';
-
 	import { onMount } from 'svelte';
 	import { clusterApiUrl, PublicKey, type Cluster } from '@solana/web3.js';
 	import {
