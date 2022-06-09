@@ -18,9 +18,6 @@ module.exports = {
         'grey': '#64748b',
         'dark': '#334155',
       },
-      backgroundImage: {
-        'main': "url('$lib/assets/images/branding/OpenHaus.svg')",
-      }
     },
   },
   plugins: [
