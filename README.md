@@ -5,6 +5,7 @@ Understand, try and play with the Solana SDK on Svelte Kit. Use the following st
 ## Clone repo and start web server
 
 ```bash
+
 ## Clone repo
 git clone https://github.com/Jonas002/sveltekit-solana.git
 
@@ -13,6 +14,7 @@ npm install
 
 # Start server on localhost:3000
 npm run dev 
+
 ```
 
 ## Type and visit localhost:3000 in your browser
