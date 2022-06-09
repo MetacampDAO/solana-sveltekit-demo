@@ -13,6 +13,15 @@ const config = {
 		// Override http methods in the Todo forms
 		methodOverride: {
 			allowed: ['PATCH', 'DELETE']
+		},
+		vite: {
+			// SOLANA WALLET ADAPTER
+			define: {
+				'process.env.BROWSER': true
+			},
+			optimizeDeps: {
+				include: ['@solana/web3.js', 'buffer']
+			},
 		}
 	}
 };
