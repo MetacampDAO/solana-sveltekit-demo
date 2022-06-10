@@ -2,7 +2,7 @@
 
 Understand, try and play with the Solana SDK on Svelte Kit. Use the following steps to get started.
 
-![alt text](https://github.com/Jonas002/images/blob/main/svelte-kit-solana1.png?raw=true)
+![alt text](https://github.com/Jonas002/images/blob/main/svelte-kit-solana-app.png?raw=true)
 
 
 ## Clone repo and start web server
