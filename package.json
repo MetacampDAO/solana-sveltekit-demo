@@ -2,7 +2,7 @@
 	"name": "web3_crawler",
 	"version": "0.0.1",
 	"engines" : { 
-		"npm" : ">=8.0.0",
+		"npm" : ">=7.0.0",
 		"node" : ">=16.0.0"
 	},
 	"scripts": {
