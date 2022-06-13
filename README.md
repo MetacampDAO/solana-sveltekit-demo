@@ -1,7 +1,10 @@
 # Interact with @solana/web3.js on Svelte Kit
 
 Understand, try and play with the Solana SDK on Svelte Kit. Use the following steps to get started.
-Minimum requirement: Node.js v16.15.1; npm v8.11.0
+
+Minimum requirement: 
+- Node.js v16.15.1
+- npm v8.11.0
 
 
 ![alt text](https://github.com/Jonas002/images/blob/main/svelte-kit-solana-app.png?raw=true)
