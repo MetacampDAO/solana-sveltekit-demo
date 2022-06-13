@@ -1,20 +1,20 @@
 <script lang=ts>
     // Creating your own fungible token
-    import { createMint, getOrCreateAssociatedTokenAccount } from '@solana/spl-token';
-    import { clusterApiUrl, Connection, Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+    import { createMint, getOrCreateAssociatedTokenAccount, mintTo, transfer } from '@solana/spl-token';
+    import * as sol from '@solana/web3.js';
     import { walletStore } from '@svelte-on-solana/wallet-adapter-core';
     import { cluster } from "$lib/stores";
 
 
-    let connection = new Connection(
-            clusterApiUrl($cluster),
+    let connection = new sol.Connection(
+            sol.clusterApiUrl($cluster),
             'confirmed'
         );
 
 
-    var payer = Keypair.generate(); // Need signer type, including pubKey and secretKey
-    var mintAuthority : PublicKey | null = $walletStore.publicKey; 
-    var freezeAuthority : PublicKey | null = $walletStore.publicKey;
+    var payer = sol.Keypair.generate(); // Need signer type, including pubKey and secretKey
+    var mintAuthority : sol.PublicKey | null = $walletStore.publicKey; 
+    var freezeAuthority : sol.PublicKey | null = $walletStore.publicKey;
 
 
 
@@ -29,7 +29,7 @@
         // Request Airdrop
         airDropSignature = await connection.requestAirdrop(
             payer.publicKey, 
-            1 * LAMPORTS_PER_SOL
+            1 * sol.LAMPORTS_PER_SOL
         )
 
         await connection.confirmTransaction(airDropSignature)
@@ -44,7 +44,7 @@
         mintAccount = await createMint(
             connection,
             payer,
-            mintAuthority,
+            mintAuthority as sol.PublicKey,
             freezeAuthority,
             9 // We are using 9 to match the CLI decimal default exactly
         );

@@ -1,9 +1,10 @@
 <script lang=ts>
     import { cluster } from "$lib/stores";
+	import type { Cluster } from "@solana/web3.js";
 
 
 	// Define list for selecting cluster
-	let cluster_selected
+	let cluster_selected : Cluster
 	let cluster_options = [
 		{ id:1, name: 'devnet'},
 		{ id:2, name: 'testnet'},

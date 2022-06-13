@@ -10,7 +10,7 @@
 
 	interface sendTransactionInput {
 		cluster: string,
-		fromKeypair: string,
+		fromKeypair: string | null,
 		toKeypair: string,
 		solAmount: number
 	}
@@ -37,7 +37,7 @@
 			let transaction = new sol.Transaction
 			transaction.add(
 				sol.SystemProgram.transfer({
-					fromPubkey: $walletStore.publicKey,
+					fromPubkey: $walletStore.publicKey as sol.PublicKey,
 					toPubkey: new sol.PublicKey(txInput.toKeypair),
 					lamports: txInput.solAmount * sol.LAMPORTS_PER_SOL
 				})
@@ -73,8 +73,8 @@
 	}
 
 
-	let airDropSignature;
-	let transferSolSignatur;
+	let airDropSignature: string;
+	let transferSolSignatur: string;
 
 	// Enable Reactivity
 	$: txInput.fromKeypair = $walletStore.publicKey ? $walletStore.publicKey.toString() : "";
