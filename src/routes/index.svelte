@@ -4,10 +4,10 @@
 </script>
 
 <script lang="ts">
-	import GetAccountInfo from '$lib/components/solana/lib/GetAccountInfo.svelte'
-	import CreateTransaction from '$lib/components/solana/lib/TransferSol.svelte'
-	import SetCluster from '$lib/components/solana/lib/SetCluster.svelte';
-	import CreateSplToken from '$lib/components/solana/lib/CreateSplToken.svelte';
+	import GetAccountInfo from '$lib/components/solana/GetAccountInfo.svelte'
+	import TransferSol from '$lib/components/solana/TransferSol.svelte'
+	import SetCluster from '$lib/components/solana/SetCluster.svelte';
+	import SplToken from '$lib/components/solana/SplToken.svelte';
 
 </script>
 
@@ -17,16 +17,18 @@
 
 
 <section class="w-full h-screen font-main">
-	<div class="flex m-4 mb-12 justify-center">
-		<SetCluster />
-	</div>
-	<div class="flex m-4 mb-12 justify-center">
-		<CreateTransaction />
-	</div>
-	<div class="flex m-4 mb-12 justify-center">
-		<GetAccountInfo />
-	</div>
-	<div class="flex m-4 mb-12 justify-center">
-		<CreateSplToken />
+	<div>
+		<div class="flex m-4 mb-12 justify-center">
+			<SetCluster />
+		</div>
+		<div class="flex m-4 mb-12 justify-center">
+			<GetAccountInfo />
+		</div>
+		<div class="flex m-4 mb-12 justify-center">
+			<TransferSol />
+		</div>
+		<div class="flex m-4 mb-12 justify-center">
+			<SplToken />
+		</div>
 	</div>
 </section>
