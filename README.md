@@ -17,6 +17,9 @@ Minimum requirement:
 ## Clone repo
 git clone https://github.com/Jonas002/sveltekit-solana.git
 
+## Change directory
+cd .\sveltekit-solana\
+
 ## Install npm dependencies
 npm install
 
