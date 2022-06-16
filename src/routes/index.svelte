@@ -27,8 +27,8 @@
 		<div class="flex m-4 mb-12 justify-center">
 			<TransferSol />
 		</div>
-		<div class="flex m-4 mb-12 justify-center">
+		<!-- <div class="flex m-4 mb-12 justify-center">
 			<SplToken />
-		</div>
+		</div> -->
 	</div>
 </section>
