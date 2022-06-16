@@ -18,7 +18,7 @@
 	}
 
 	// Send Transaction function
-    async function transferSol(sourcePubKey : sol.PublicKey, targetPubKey : sol.PublicKey, solAmount : number) {
+    async function transferSol(sourcePubKey: sol.PublicKey, targetPubKey : sol.PublicKey, solAmount : number) {
 
 		// Create Transaction with instruction
 		let transaction = new sol.Transaction
@@ -80,25 +80,18 @@
 
 	<div>
 		<!-- Airdrop success message -->
-		{#if airDropSignature}
-		<p>{solAmount} SOL successfully airdropped</p>
-		{/if}
 		{#await airDropSignature then value}
-		{#if value}
-		<p>Airdop Signature: 
-			<a class="hover:text-primary" href='https://solana.fm/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
-		</p>
-		{/if}
-	{/await}
-
+			{#if value}
+			<p>SUCCESS -> Airdop Signature: 
+				<a class="hover:text-primary" href='https://solana.fm/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
+			</p>
+			{/if}
+		{/await}
 
 		<!-- Transfer success message -->
-		{#if transferSignature}
-			<p>{solAmount} SOL successfully sent</p>
-		{/if}
 		{#await transferSignature then value}
 			{#if value}
-			<p>Transfer Signature: 
+			<p>SUCCESS -> Transfer Signature: 
 				<a class="hover:text-primary" href='https://solana.fm/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
 			</p>
 			{/if}

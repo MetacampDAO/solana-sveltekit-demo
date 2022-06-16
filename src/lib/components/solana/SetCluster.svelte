@@ -14,12 +14,10 @@
     // Set cluster connection via store
 	function setConnection() {
 
-		// Set new cluster in store
+		// Set new cluster and connection in store
 		cluster.set(
 			cluster_selected as Cluster
 		)
-
-		// Set new connection in store
 		connectedCluster.set(
 			new Connection(clusterApiUrl(cluster_selected as Cluster), 'confirmed') 
 		)
