@@ -3,8 +3,8 @@
 Understand, try and play with the Solana SDK on Svelte Kit. Use the following steps to get started.
 
 Minimum requirement: 
-- Node.js (v16.15.1) and package manager npm (v8.11.0): https://nodejs.org/en/download/
-- wallet extension (one of two):
+- Install Node.js (v16.15.1) and package manager npm (v8.11.0): https://nodejs.org/en/download/
+- Install wallet extension (at least one of two):
     - Phantom https://chrome.google.com/webstore/detail/phantom/bfnaelmomeimhlpmgjnjophhpkkoljpa
     - Solflare https://chrome.google.com/webstore/detail/solflare-wallet/bhhhlbepdkbapadjdnnojkbgioiodbic
 
@@ -20,8 +20,8 @@ Minimum requirement:
 git clone https://github.com/Jonas002/sveltekit-solana.git
 
 ## Change directory 
-cd .\sveltekit-solana\ // for Windows
-cd ./sveltekit-solana/ // for Linux-based / Mac
+cd .\sveltekit-solana\ ## for PowerShell / CMD or Windows
+cd ./sveltekit-solana/ ## for Bash or Linux-based systems / Mac
 
 
 ## Install npm dependencies
