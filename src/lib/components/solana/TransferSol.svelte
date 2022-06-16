@@ -86,7 +86,7 @@
 		{#await airDropSignature then value}
 		{#if value}
 		<p>Airdop Signature: 
-			<a class="hover:text-primary" href='https://solscan.io/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
+			<a class="hover:text-primary" href='https://solana.fm/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
 		</p>
 		{/if}
 	{/await}
@@ -99,7 +99,7 @@
 		{#await transferSignature then value}
 			{#if value}
 			<p>Transfer Signature: 
-				<a class="hover:text-primary" href='https://solscan.io/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
+				<a class="hover:text-primary" href='https://solana.fm/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
 			</p>
 			{/if}
 		{/await}

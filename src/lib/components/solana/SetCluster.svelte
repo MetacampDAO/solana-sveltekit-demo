@@ -1,5 +1,5 @@
 <script lang=ts>
-    import { connectedCluster } from "$lib/stores";
+    import { cluster, connectedCluster } from "$lib/stores";
 	import { type Cluster, Connection, clusterApiUrl } from "@solana/web3.js";
 
 
@@ -10,15 +10,25 @@
 		{ name: 'mainnet-beta'},
 	]
 
+
     // Set cluster connection via store
 	function setConnection() {
+
+		// Set new cluster in store
+		cluster.set(
+			cluster_selected as Cluster
+		)
+
+		// Set new connection in store
 		connectedCluster.set(
 			new Connection(clusterApiUrl(cluster_selected as Cluster), 'confirmed') 
 		)
+
 	}
 
+
 	// Input/Output variables used
-	let cluster_selected : Cluster
+	let cluster_selected : Cluster = $cluster
 
 </script>
 

@@ -4,15 +4,15 @@
 
 
 	// Get AccountInfo function
-	async function getAccountInfo(pubKey : string) {
+	async function getAccountInfo(pubKey : sol.PublicKey) {
 		
 		// Get accountInfo
-		var wallet = new sol.PublicKey(pubKey)
-		accountInfo = await $connectedCluster.getAccountInfo(wallet, 'confirmed');
+		accountInfo = await $connectedCluster.getAccountInfo(pubKey, 'confirmed');
 
 		return accountInfo
 
 	};
+
 
 	// Input/Output variables used
 	let pubKey : string
@@ -28,9 +28,15 @@
 		<div>
 			<label for="Account">Account:</label>
 			<input class="text-black w-full mb-4" bind:value={pubKey} placeholder="Enter address ...">
-			<button class="p-2 bg-primary rounded-md" on:click={() => getAccountInfo(pubKey)}>
+			<button class="p-2 bg-primary rounded-md" on:click={() => getAccountInfo(new sol.PublicKey(pubKey))}>
 				Get Account Info
 			</button>
+			<a href='https://solana.fm/address/{pubKey}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">
+				<button class="p-2 bg-primary rounded-md">
+					Check Explorer
+				</button>
+			</a>
+
 		</div>
 
 		<!-- Response Output -->
