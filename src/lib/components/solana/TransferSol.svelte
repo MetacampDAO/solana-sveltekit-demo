@@ -41,7 +41,7 @@
 	let transferSignature: string;
 	let sourcePubKey : sol.PublicKey | any
 	let targetPubKey : sol.PublicKey 
-	let solAmount : number = 0.1
+	let solAmount : number | string = 500000
 
 	// Enable Reactivity, "Source" automatically set to connected wallet
 	$: sourcePubKey = $walletStore.publicKey ? $walletStore.publicKey : null
@@ -50,6 +50,8 @@
 
 <!-- HTML + SVELTE -->
 <section class="bg-dark p-4 space-y-4 w-1/2 rounded-md text-black dark:text-white">
+
+	<!-- Transfer & Airdrop Token -->
 	<div class="grid grid-cols-1 space-y-4">
 
 		<!-- User Input -->
