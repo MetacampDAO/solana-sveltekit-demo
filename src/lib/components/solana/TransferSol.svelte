@@ -41,7 +41,7 @@
 	let transferSignature: string;
 	let sourcePubKey : sol.PublicKey | any
 	let targetPubKey : sol.PublicKey 
-	let solAmount : number | string = 500000
+	let solAmount : number | string = 0.5
 
 	// Enable Reactivity, "Source" automatically set to connected wallet
 	$: sourcePubKey = $walletStore.publicKey ? $walletStore.publicKey : null
