@@ -8,4 +8,4 @@ node_modules
 !.env.example
 .vercel
 .output
-src/lib/components/solana/SplToken.svelte
+*SplToken.svelte
