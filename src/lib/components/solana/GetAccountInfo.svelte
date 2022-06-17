@@ -24,7 +24,7 @@
 <!-- HTML + SVELTE -->
 <section class="bg-dark p-4 space-y-4 w-1/2 rounded-md text-black dark:text-white">
 	<div>
-		<!-- User Button -->
+		<!-- User Input -->
 		<div>
 			<label for="Account">Account:</label>
 			<input class="text-black w-full mb-4" bind:value={pubKey} placeholder="Enter address ...">
@@ -36,7 +36,6 @@
 					Check Explorer
 				</button>
 			</a>
-
 		</div>
 
 		<!-- Response Output -->

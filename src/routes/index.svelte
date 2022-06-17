@@ -7,7 +7,7 @@
 	import GetAccountInfo from '$lib/components/solana/GetAccountInfo.svelte'
 	import TransferSol from '$lib/components/solana/TransferSol.svelte'
 	import SetCluster from '$lib/components/solana/SetCluster.svelte';
-	// import SplToken from '$lib/components/solana//SplToken.svelte';
+	import SplToken from '$lib/components/solana//SplToken.svelte';
 
 </script>
 
@@ -27,8 +27,8 @@
 		<div class="flex m-4 mb-12 justify-center">
 			<TransferSol />
 		</div>
-		<!-- <div class="flex m-4 mb-12 justify-center">
+		<div class="flex m-4 mb-12 justify-center">
 			<SplToken />
-		</div> -->
+		</div>
 	</div>
 </section>
