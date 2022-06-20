@@ -8,6 +8,8 @@
 	import TransferSol from '$lib/components/solana/TransferSol.svelte'
 	import SetCluster from '$lib/components/solana/SetCluster.svelte';
 	import SplToken from '$lib/components/solana//SplToken.svelte';
+	import SolanaPay from '$lib/components/solana/SolanaPay.svelte';
+
 
 </script>
 
