@@ -4,10 +4,13 @@
 	import { walletStore } from "@svelte-on-solana/wallet-adapter-core";	
 	import { cluster, connectedCluster } from "$lib/stores";
 	import { SolendAction, SolendMarket, SolendObligation } from '@solendprotocol/solend-sdk'
+	import { createTransferInstruction } from '@solana/spl-token';
 	import BN from 'bn.js'
 
 
-	async function depositUsdc(){
+
+
+	async function payAndDepositUsdc(){
 
 		// Create one or more (may contain setup accuont creation txns) to perform a Solend action.
 		var solendAction = await SolendAction.buildDepositTxns(
@@ -19,7 +22,11 @@
 		);
 
 		var transaction = new sol.Transaction()
+
+		// Add USDC transfer to merchant instruction
+		var transferIx = createTransferInstruction(usdcFrom, usdcTo, $walletStore.publicKey as sol.PublicKey, usdcPrice as number)
 		transaction.add(
+			transferIx,
 			solendAction.lendingIxs[0]
 		)
 		usdcDepositSignature = await $walletStore.sendTransaction(transaction, $connectedCluster); // sendTransaction from wallet adapter or custom
