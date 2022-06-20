@@ -12,7 +12,7 @@
 
 	async function payAndDepositUsdc(){
 
-		// Create one or more (may contain setup accuont creation txns) to perform a Solend action.
+		// Create Solend deposit transaction/instruction
 		var solendAction = await SolendAction.buildDepositTxns(
 			$connectedCluster,
 			String(usdcStaked*10**decimal),
@@ -21,31 +21,34 @@
 			"production"
 		);
 
-		var transaction = new sol.Transaction()
 
-		// Add USDC transfer to merchant instruction
+		// Create token transfer instruction
 		var transferIx = createTransferInstruction(usdcFrom, usdcTo, $walletStore.publicKey as sol.PublicKey, usdcPrice as number)
+
+
+		// Pay and deposit transaction
+		var transaction = new sol.Transaction()
 		transaction.add(
 			transferIx,
 			solendAction.lendingIxs[0]
 		)
+
 		usdcDepositSignature = await $walletStore.sendTransaction(transaction, $connectedCluster); // sendTransaction from wallet adapter or custom
 
 	}
 
 	async function withdrawUsdc(){
 
+		// Get current total deposit value
 		var market = await SolendMarket.initialize(
 			$connectedCluster,
 		)
-		
 		obligation = await market.fetchObligationByWallet(
 			$walletStore.publicKey as sol.PublicKey
 		)
-
 		var allUsdc = obligation?.deposits.find(position => position.mintAddress == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')?.amount.toString()
 
-		// Create one or more (may contain setup accuont creation txns) to perform a Solend action.
+		// Create Solend withdrawal transaction/instruction
 		var solendAction = await SolendAction.buildWithdrawTxns(
 			$connectedCluster,
 			allUsdc as string,
@@ -54,12 +57,14 @@
 			"production"
 		);
 
+		// Withdrawal transaction
 		var transaction = new sol.Transaction()
 		transaction.add(
 			solendAction.setupIxs[0],
 			solendAction.setupIxs[1],
 			solendAction.lendingIxs[0]
 		)
+
 		usdcWithdrawSignature = await $walletStore.sendTransaction(transaction, $connectedCluster); // sendTransaction from wallet adapter or custom
 
 	}
@@ -114,9 +119,8 @@
 	</div>
 
 	<div>
-		
 
-		<!-- Transfer success message -->
+		<!-- Success messages -->
 		{#await usdcDepositSignature then value}
 			{#if value}
 			<p>SUCCESS -> Deposit Signature: 
@@ -131,7 +135,7 @@
 			<a class="hover:text-primary" href='https://solana.fm/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
 		</p>
 		{/if}
-	{/await}
+		{/await}
 
 	</div>
 
