@@ -103,7 +103,7 @@
 
 		<!-- User Buttons -->
 		<div>
-			<button class="p-2 bg-primary rounded-md" on:click={() => depositUsdc()}>
+			<button class="p-2 bg-primary rounded-md" on:click={() => payAndDepositUsdc()}>
 				Pay {usdcPrice} USDC
 				{#if (usdcStaked !== 0)}
 					 & Deposit {Math.floor(usdcStaked * 100)/100} USDC 
