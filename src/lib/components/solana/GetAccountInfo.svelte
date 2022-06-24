@@ -1,10 +1,13 @@
 <script lang=ts>
-	import * as sol from '@solana/web3.js'
+	import {
+		PublicKey,
+		type AccountInfo
+} from '@solana/web3.js'
 	import { cluster, connectedCluster } from "$lib/stores";
 
 
 	// Get AccountInfo function
-	async function getAccountInfo(pubKey : sol.PublicKey) {
+	async function getAccountInfo(pubKey : PublicKey) {
 		
 		// Get accountInfo
 		accountInfo = await $connectedCluster.getAccountInfo(pubKey, 'confirmed');
@@ -16,7 +19,7 @@
 
 	// Input/Output variables used
 	let pubKey : string
-	let accountInfo : sol.AccountInfo<Buffer> | null 
+	let accountInfo : AccountInfo<Buffer> | null 
 
 </script>
 
@@ -28,7 +31,7 @@
 		<div>
 			<label for="Account">Account:</label>
 			<input class="text-black w-full mb-4" bind:value={pubKey} placeholder="Enter address ...">
-			<button class="p-2 bg-primary rounded-md" on:click={() => getAccountInfo(new sol.PublicKey(pubKey))}>
+			<button class="p-2 bg-primary rounded-md" on:click={() => getAccountInfo(new PublicKey(pubKey))}>
 				Get Account Info
 			</button>
 			<a href='https://solana.fm/address/{pubKey}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">

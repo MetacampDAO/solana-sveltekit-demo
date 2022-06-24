@@ -1,37 +1,58 @@
 <script lang=ts>	
-	// Include borsh functionality
-	import * as sol from '@solana/web3.js'
+	import { 
+		PublicKey,
+		Connection,
+		LAMPORTS_PER_SOL,
+		clusterApiUrl,
+		SystemProgram,
+		Transaction
+	} from '@solana/web3.js'
 	import { walletStore } from "@svelte-on-solana/wallet-adapter-core";	
 	import { cluster, connectedCluster } from "$lib/stores";
 
 
 	// Request Airdrop function
-	async function airDrop(targetPubKey : sol.PublicKey, solAmount : number) {
+	async function airDrop(targetPubKey : PublicKey, solAmount : number) {
 
 		// Request Airdrop
 		airDropSignature = await $connectedCluster.requestAirdrop(
 			targetPubKey,
-			solAmount * sol.LAMPORTS_PER_SOL
+			solAmount * LAMPORTS_PER_SOL
 		)
 
 		return airDropSignature
 	}
 
 	// Send Transaction function
-    async function transferSol(sourcePubKey: sol.PublicKey, targetPubKey : sol.PublicKey, solAmount : number) {
+    async function transferSol(sourcePubKey: PublicKey, targetPubKey : PublicKey, solAmount : number) {
+
+		var connection = new Connection(clusterApiUrl('devnet'), 'processed')
 
 		// Create Transaction with instruction
-		let transaction = new sol.Transaction
+		var lastValidBlockHeight = (await $connectedCluster.getLatestBlockhash()).lastValidBlockHeight
+		var blockhash = (await $connectedCluster.getLatestBlockhash()).blockhash
+		var transaction = new Transaction(
+            {
+                feePayer: $walletStore.publicKey as PublicKey,
+                blockhash: blockhash,
+                lastValidBlockHeight: lastValidBlockHeight
+            }
+        )  
 		transaction.add(
-			sol.SystemProgram.transfer({
+			SystemProgram.transfer({
 				fromPubkey: sourcePubKey,
 				toPubkey: targetPubKey,
-				lamports: solAmount * sol.LAMPORTS_PER_SOL
+				lamports: solAmount * LAMPORTS_PER_SOL
 			})
 		)
 
+
+		console.log(lastValidBlockHeight)
+		console.log($connectedCluster)
+
+
 		// Send Transaction
-		transferSignature = await $walletStore.sendTransaction(transaction, $connectedCluster)
+		transferSignature = await $walletStore.sendTransaction(transaction, connection, {skipPreflight:true})
 
 		return transferSignature
 	}
@@ -39,8 +60,8 @@
 	// Input/Output variables used
 	let airDropSignature: string;
 	let transferSignature: string;
-	let sourcePubKey : sol.PublicKey | any
-	let targetPubKey : sol.PublicKey 
+	let sourcePubKey : PublicKey | any
+	let targetPubKey : PublicKey 
 	let solAmount : number | string = 0.5
 
 	// Enable Reactivity, "Source" automatically set to connected wallet
@@ -70,10 +91,10 @@
 
 		<!-- User Buttons -->
 		<div>
-			<button class="p-2 bg-primary rounded-md" on:click={() => transferSol(new sol.PublicKey(sourcePubKey), new sol.PublicKey(targetPubKey), +solAmount)}>
+			<button class="p-2 bg-primary rounded-md" on:click={() => transferSol(new PublicKey(sourcePubKey), new PublicKey(targetPubKey), +solAmount)}>
 				Send Transaction
 			</button>
-			<button class="p-2 bg-primary rounded-md " on:click={() => airDrop(new sol.PublicKey(targetPubKey), +solAmount)}>
+			<button class="p-2 bg-primary rounded-md " on:click={() => airDrop(new PublicKey(targetPubKey), +solAmount)}>
 				Airdrop
 			</button>
 		</div>

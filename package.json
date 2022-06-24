@@ -32,7 +32,7 @@
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.48.0",
-		"svelte-preprocess": "^4.10.6",
+		"svelte-preprocess": "^4.10.7",
 		"tailwindcss": "^3.0.24",
 		"tslib": "^2.4.0",
 		"typescript": "~4.6.4"
@@ -46,10 +46,11 @@
 		"@solana/pay": "^0.2.0",
 		"@solana/spl-token": "^0.2.0",
 		"@solana/wallet-adapter-base": "^0.9.5",
-		"@solana/wallet-adapter-wallets": "^0.16.0",
+		"@solana/wallet-adapter-wallets": "^0.16.1",
 		"@solana/web3.js": "^1.41.4",
 		"@solendprotocol/solend-sdk": "^0.6.0",
 		"@svelte-on-solana/wallet-adapter-core": "^1.0.3-alpha.1",
+		"@svelte-on-solana/wallet-adapter-ui": "^1.0.17-alpha.0",
 		"cookie": "^0.5.0",
 		"jose": "^4.8.1",
 		"qr-code-styling": "^1.6.0-rc.1"
