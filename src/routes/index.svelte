@@ -5,10 +5,13 @@
 
 <script lang="ts">
 
-	import GetAccountInfo from '$lib/components/solana/GetAccountInfo.svelte';
+	import GetParsedAccountData from '$lib/components/solana/GetParsedAccountData.svelte';
 	import TransferSol from '$lib/components/solana/TransferSol.svelte';
 	import SetCluster from '$lib/components/solana/SetCluster.svelte';
 	import SplToken from '$lib/components/solana//SplToken.svelte';
+
+
+	
 
 </script>
 
@@ -23,7 +26,7 @@
 			<SetCluster />
 		</div>
 		<div class="flex m-4 mb-12 justify-center">
-			<GetAccountInfo />
+			<GetParsedAccountData />
 		</div>
 		<div class="flex m-4 mb-12 justify-center">
 			<TransferSol />

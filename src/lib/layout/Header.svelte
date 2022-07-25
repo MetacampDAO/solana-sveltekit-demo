@@ -18,7 +18,7 @@
 		<div class="absolute left-6 top-6">
 			<a href="/">
 			<div class:active={$page.url.pathname === '/'}>
-				<p class="font-bold tracking-widest text-2xl">OpenHaus</p>
+				<p class="font-bold tracking-widest text-2xl">Metacamp</p>
 			</div></a>
 		</div>
 		<div class="absolute right-16 top-6 h-4">
