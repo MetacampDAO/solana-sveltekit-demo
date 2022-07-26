@@ -1,8 +1,6 @@
-import {
+import type {
     PublicKey,
-    LAMPORTS_PER_SOL,
     Connection,
-    type ParsedAccountData
 } from '@solana/web3.js';
 
 import { 
