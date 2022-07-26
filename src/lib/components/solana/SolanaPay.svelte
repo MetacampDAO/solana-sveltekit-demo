@@ -25,6 +25,7 @@
             amount: new BigNumber(amount),
             message: message,
             memo: "test" as string,
+            splToken: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
             // reference: new PublicKey(recipient)
         }
         )
