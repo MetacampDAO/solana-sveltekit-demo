@@ -1,7 +1,7 @@
 <script lang=ts>
     import { cluster, connectedCluster } from '$lib/stores'
-    import { encodeURL, createQR, type Amount } from '@solana/pay'
-    import { PublicKey } from '@solana/web3.js';
+    import { encodeURL, createQR, parseURL, type Amount } from '@solana/pay'
+    import { PublicKey, Transaction } from '@solana/web3.js';
     import { walletStore } from '@svelte-on-solana/wallet-adapter-core';
     import BigNumber from 'bignumber.js';
     import type QRCodeStyling from 'qr-code-styling'

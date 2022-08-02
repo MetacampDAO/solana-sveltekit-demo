@@ -12,7 +12,7 @@
 		TOKEN_PROGRAM_ID
 	} from "@solana/spl-token";
 	import { cluster, connectedCluster } from "$lib/stores";
-	import { parseFile } from "$lib/ts/parseCSV";
+	import parseCSV from "$lib/ts/parseCSV";
 	import subscribeAccount from '$lib/ts/subscribeAccount';
 
 
@@ -38,7 +38,7 @@
 
 	// Subscribe from File Input
 	async function updateFile(filePath: any) {
-		data = await parseFile(filePath)
+		let data = await parseCSV(filePath)
 		for (let item of data) {
 			console.log(item.pubKey)
 			let subscriptionId = await subscribeAccount($connectedCluster, new PublicKey(item.pubKey), item)
@@ -54,7 +54,6 @@
 
 	// Subscribe
 	let onAccountChange : number
-	let data : any
 
 </script>
 
