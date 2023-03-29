@@ -29,10 +29,10 @@ export async function GET() {
 
 const splToken = new PublicKey(process.env.USDC_MINT as String);
 const MERCHANT_WALLET = new PublicKey(process.env.MERCHANT_WALLET as String);
-const connection = new Connection('mainnet-beta', 'confirmed')
+const connection = new Connection(`${process.env.HTTPS_RPC_ENDPOINT}`, 'confirmed')
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
-export async function POST({ request : any }) {
+export async function POST({ request }) {
 
   // Account provided in the transaction request body by the wallet.
   const accountField = request.body?.account;
@@ -43,11 +43,22 @@ export async function POST({ request : any }) {
   // create spl transfer instruction
   const splTransferIx = await createSplTransferIx(sender, connection, splToken, MERCHANT_WALLET);
 
+  console.log(splTransferIx)
+
   // create the transaction
-  const transaction = new Transaction();
+  const latestBlockhash = await connection.getLatestBlockhash()
+  const transaction = new Transaction(
+    {
+      blockhash: latestBlockhash.blockhash,
+      lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      feePayer: MERCHANT_WALLET
+    }
+  );
 
   // add the instruction to the transaction
   transaction.add(splTransferIx);
+  transaction.partialSign( keypair );
+
 
   // Serialize and return the unsigned transaction.
   const serializedTransaction = transaction.serialize({

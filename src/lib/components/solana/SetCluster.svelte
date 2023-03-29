@@ -18,8 +18,32 @@
 		cluster.set(
 			cluster_selected as Cluster
 		)
+
+		let devnet : string = "https://devnet.genesysgo.net/";
+		let mainnet : string = "https://nd-851-001-175.p2pify.com/6014eef5a39244c0fa63c9645a2d923d";
+		let testnet : string = "https://api.testnet.solana.com/";
+
+		let api_url : string
+
+		switch(cluster_selected) {
+				case 'mainnet-beta':
+					api_url	= mainnet;
+					break;
+				case 'testnet':
+					api_url	= testnet;
+					break
+				case 'devnet':
+					api_url	= devnet;
+					break;
+				default:
+					api_url = testnet
+					break
+			}
+
+
 		connectedCluster.set(
-			new Connection(clusterApiUrl(cluster_selected as Cluster), 'confirmed') 
+			// new Connection(clusterApiUrl(cluster_selected as Cluster), 'confirmed') 
+			new Connection(api_url, 'confirmed') 
 		)
 
 	}

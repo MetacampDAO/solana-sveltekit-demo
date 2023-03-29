@@ -5,7 +5,7 @@
 		type AccountInfo,
 		type RpcResponseAndContext, 
 		type AccountChangeCallback,
-LAMPORTS_PER_SOL
+		LAMPORTS_PER_SOL
 	} from '@solana/web3.js';
 	import { 
 		AccountLayout, 
@@ -14,14 +14,26 @@ LAMPORTS_PER_SOL
 	import { cluster, connectedCluster } from "$lib/stores";
 
 
+
+	// Get AccountInfo function
+	async function getAccountInfo(pubKey : PublicKey) {
+	
+		// Get accountInfo
+		AccountData = await $connectedCluster.getAccountInfo(pubKey, 'confirmed');
+
+		return AccountData
+
+	};
+
+
 	// Get ParsedAccountData function
 	async function getParsedAccountData(pubKey : PublicKey) {
 		
 		// Get accountInfo
-		parsedAccountData = await $connectedCluster.getParsedAccountInfo(pubKey, 'confirmed');
+		AccountData = await $connectedCluster.getParsedAccountInfo(pubKey, 'confirmed');
 
 
-		return parsedAccountData
+		return AccountData
 
 	};
 
@@ -43,7 +55,7 @@ LAMPORTS_PER_SOL
 			'confirmed')
 
 
-		return parsedAccountData
+		return AccountData
 
 	};
 
@@ -52,7 +64,7 @@ LAMPORTS_PER_SOL
 	// Input/Output variables used
 	let pubKey : string
 	let accountInfo : AccountInfo<Buffer> | null
-	let parsedAccountData : RpcResponseAndContext<AccountInfo<Buffer | ParsedAccountData> | null>
+	let AccountData : RpcResponseAndContext<AccountInfo<Buffer | ParsedAccountData> | null>
 	let accountData
 
 	// Subscribe
@@ -68,8 +80,11 @@ LAMPORTS_PER_SOL
 		<div>
 			<label for="Account">Account:</label>
 			<input class="text-black w-full mb-4" bind:value={pubKey} placeholder="Enter address ...">
-			<button class="p-2 bg-primary rounded-md" on:click={() => getParsedAccountData(new PublicKey(pubKey))}>
+			<button class="p-2 bg-primary rounded-md" on:click={() => getAccountInfo(new PublicKey(pubKey))}>
 				Get Account Info
+			</button>
+			<button class="p-2 bg-primary rounded-md" on:click={() => getParsedAccountData(new PublicKey(pubKey))}>
+				Get Parsed Account Info
 			</button>
 			<button class="p-2 bg-primary rounded-md" on:click={() => subscribeAccountData(new PublicKey(pubKey))}>
 				Subscribe Account
@@ -88,7 +103,7 @@ LAMPORTS_PER_SOL
 			{/if}
 		</div>
 		<div>
-			{#await parsedAccountData}
+			{#await AccountData}
 				<p>waiting</p>
 			{:then account}
 				{#if account !== undefined}

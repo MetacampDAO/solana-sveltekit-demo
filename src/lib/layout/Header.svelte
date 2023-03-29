@@ -3,6 +3,7 @@
 	import Toggle from '$lib/layout/Darkmode.svelte';
 	import Adapter from '$lib/components/solana/wallet/Adapter.svelte';
 
+
 </script>
 
 

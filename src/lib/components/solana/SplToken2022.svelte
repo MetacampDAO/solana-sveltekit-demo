@@ -5,7 +5,9 @@
         Keypair,
         SystemProgram,
         Connection,
-        type Signer
+        type Signer,
+        LAMPORTS_PER_SOL,
+        sendAndConfirmTransaction
     } from '@solana/web3.js'
 
     // Create Instructions 
@@ -18,9 +20,16 @@
         createTransferInstruction,
         getAssociatedTokenAddress,
         ASSOCIATED_TOKEN_PROGRAM_ID,
-        TOKEN_PROGRAM_ID, 
+        // TOKEN_PROGRAM_ID, 
         MINT_SIZE,
-    } from '@solana/spl-token'
+        TOKEN_2022_PROGRAM_ID,
+        getMintLen,
+        ExtensionType,
+        createInitializeMintCloseAuthorityInstruction,
+        createCloseAccountInstruction,
+        createInitializeInterestBearingMintInstruction,
+        createInitializeNonTransferableMintInstruction
+    } from "@solana/spl-token"
 
     // Import Wallet
 	import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
@@ -29,17 +38,16 @@
 	import { cluster, connectedCluster } from "$lib/stores";
     import type { SendTransactionOptions } from '@solana/wallet-adapter-base';
 
-
-
-
     // Create Mint
-    async function createMintAccount(wallet : any, connection : Connection) {
-
+    async function createMintAccountWithCloseAuthority(wallet : any, connection : Connection) {
         // Create Mint transaction
         var mintKeypair = Keypair.generate() as Signer
-        var lamports = await getMinimumBalanceForRentExemptMint(connection)
-        var latestBlockHash = await connection.getLatestBlockhash();
 
+        var extensions = [ExtensionType.MintCloseAuthority];
+        var mintLen = getMintLen(extensions);
+        var lamports = await connection.getMinimumBalanceForRentExemption(mintLen);
+        var programId = TOKEN_2022_PROGRAM_ID // New Token-2022 Program Id
+        var latestBlockHash = await connection.getLatestBlockhash();
         var transaction = new Transaction(
             {
                 feePayer: wallet.publicKey as PublicKey,
@@ -51,25 +59,105 @@
             SystemProgram.createAccount({
                 fromPubkey: wallet.publicKey as PublicKey,
                 newAccountPubkey: mintKeypair.publicKey,
-                space: MINT_SIZE,
+                space: mintLen,
                 lamports: lamports,
-                programId: TOKEN_PROGRAM_ID,
+                programId: programId
             }),
+            // Token-2022
+            createInitializeMintCloseAuthorityInstruction(
+                mintKeypair.publicKey, 
+                wallet.publicKey, 
+                programId
+            ),
+            // End of Token-2022 feature
             createInitializeMintInstruction(
                 mintKeypair.publicKey as PublicKey, // mintAccount
                 9 as number, // decimals
                 wallet.publicKey as PublicKey, // mintAuthority
                 wallet.publicKey as PublicKey, // freezeAuthority
-                TOKEN_PROGRAM_ID as PublicKey
+                programId
             )        
         )
 
         transaction.partialSign( mintKeypair )
 
         // Sign with wallet and send Transaction
-        mintSignature = await $walletStore.sendTransaction( transaction, connection)
+        mintSignature = await $walletStore.sendTransaction(transaction, connection)
 
         return mint = mintKeypair.publicKey.toString()
+    }
+
+    // Create Non-Transferable Mint
+    async function createNonTransferableMint(wallet : any, connection : Connection) {
+        // Create Mint transaction
+        var mintKeypair = Keypair.generate() as Signer;
+        var extensions = [
+            ExtensionType.NonTransferable
+        ];
+        var mintLen : number = getMintLen(extensions);
+        console.log(mintLen);
+        var lamports : number = await connection.getMinimumBalanceForRentExemption(mintLen);
+        console.log(lamports / LAMPORTS_PER_SOL);
+        var programId = TOKEN_2022_PROGRAM_ID // New Token-2022 Program Id
+        var latestBlockHash = await connection.getLatestBlockhash();
+        var transaction = new Transaction(
+            {
+                feePayer: wallet.publicKey as PublicKey,
+                blockhash: latestBlockHash.blockhash,
+                lastValidBlockHeight: latestBlockHash.lastValidBlockHeight
+            }
+        );  // Create new transaction for creating Mint Account
+        transaction.add(  
+            SystemProgram.createAccount({
+                fromPubkey: wallet.publicKey as PublicKey,
+                newAccountPubkey: mintKeypair.publicKey as PublicKey,
+                space: mintLen,
+                lamports,
+                programId, // New Token-2022 Program Id
+            }),
+            // Token-2022
+            createInitializeNonTransferableMintInstruction(
+                mintKeypair.publicKey, 
+                programId
+            ),
+            // End of Token-2022 feature
+            createInitializeMintInstruction(
+                mintKeypair.publicKey as PublicKey, // mintAccount
+                9 as number, // decimals
+                wallet.publicKey as PublicKey, // mintAuthority
+                wallet.publicKey as PublicKey, // freezeAuthority
+                programId, // New Token-2022 Program Id
+            )        
+        );
+
+        transaction.partialSign( mintKeypair );
+
+        // Sign with wallet and send Transaction
+        mintSignature = await $walletStore.sendTransaction(transaction, connection);
+
+        return mint = mintKeypair.publicKey.toString()
+    }
+
+    // Close Mint
+    async function closeMint(wallet: any, connection: Connection, mint: PublicKey | string) {
+        if (typeof mint == 'string') {
+            mint = new PublicKey(mint)
+        }
+
+        var latestBlockHash = await connection.getLatestBlockhash();
+        var transaction = new Transaction(
+            {
+                feePayer: wallet.publicKey as PublicKey,
+                blockhash: latestBlockHash.blockhash,
+                lastValidBlockHeight: latestBlockHash.lastValidBlockHeight
+            }
+        ) 
+        transaction.add(
+            createCloseAccountInstruction(mint, wallet.publicKey, wallet.publicKey, [], TOKEN_2022_PROGRAM_ID)
+        )
+        closeMintSignature = await $walletStore.sendTransaction(transaction, connection)
+
+        return closeMintSignature
     }
 
 
@@ -203,6 +291,7 @@
     let createTokenAccountSignature : string
     let mintTokenSignature : string
     let transferTokenSignature : string
+    let closeMintSignature : string
 
     // Accounts
     let wallet
@@ -226,16 +315,23 @@
 
 <!-- HTML + SVELTE -->
 <section class="bg-dark p-4 space-y-4 w-3/4 rounded-md text-black dark:text-white">
-    <h1>Token Program</h1>
+    <h1>Token-2022</h1>
     <div class="grid grid-cols-1 space-y-8">
 
         <!-- Create Mint -->
         <div>
             <!-- User Input -->
             <p>SPL Token:</p>
-            <button class="p-2 bg-primary rounded-md " on:click={() => createMintAccount($walletStore, $connectedCluster)}>
-                Create Mint
-            </button>
+            <div class="">
+                <button class="p-2 bg-primary rounded-md" on:click={() => createMintAccountWithCloseAuthority($walletStore, $connectedCluster)}>
+                    Create Mint
+                </button>
+                <button class="p-2 bg-primary rounded-md" on:click={() => createNonTransferableMint($walletStore, $connectedCluster)}>
+                    Create Non-Transferable Mint
+                </button>
+            </div>
+
+
 
             <!-- Response Output -->
             {#await mintSignature}
@@ -259,6 +355,28 @@
                 <input class="text-black w-full" bind:value={mint} placeholder="Enter mint account address ...">
             </div>
             <div>
+                <button class="p-2 bg-primary rounded-md " on:click={() => closeMint($walletStore, $connectedCluster, mint)}>
+                    Close Mint
+                </button>
+            </div>
+
+            <!-- Response Output -->
+
+            <div>
+                {#await closeMintSignature}
+                <p>waiting for closing Mint</p>
+                {:then value}
+                    {#if value}
+                        <p>SUCCESS -> Close Mint Signature: 
+                            <a class="hover:text-primary" href='https://solscan.io/tx/{value}?cluster={$cluster}' target="_blank" rel="noopener noreferrer">{value}</a>
+                        </p>
+                    {/if}
+                {:catch error}
+                    <p>Error</p>
+                {/await}
+            </div>
+
+            <div>
                 <label for="TokenAccountOwner">Token Account Owner:</label>
                 <input class="text-black w-full" bind:value={tokenOwner} placeholder="Enter recipient token owner address ..."> 
             </div>
@@ -266,6 +384,7 @@
                 <button class="p-2 bg-primary rounded-md " on:click={() => createTokenAccount($walletStore, $connectedCluster, mint, tokenOwner)}>
                     Create Token Account
                 </button>
+
             </div>
 
             <!-- Response Output -->

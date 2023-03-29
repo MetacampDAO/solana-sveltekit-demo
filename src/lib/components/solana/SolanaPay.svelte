@@ -25,14 +25,17 @@
             amount: new BigNumber(amount),
             message: message,
             memo: "test" as string,
-            splToken: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
+            // splToken: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
             // reference: new PublicKey(recipient)
         }
         )
 
+        url = new URL(`solana:https://solana.metacamp.so/endpoint/solanapay`)
+
         QR = createQR(url, 200)
         await QR._getElement()
         QR_str = QR._svg?.outerHTML as string
+
 
         return QR
     }
